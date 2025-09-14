@@ -1,0 +1,7 @@
+print("안녕하세요, 파이선!")
+print(10+20)
+print("10 + 20 =", 10 + 20)
+name = input("당신의 이름은 무엇인가요? ")
+print("반감습니다,", name, "님!")
+name = input("이름을 입력하세요: ")
+print("반가워요,", name)
