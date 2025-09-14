@@ -26,7 +26,7 @@ if num > 0:
 else:
     print("음수입니다.")
 
-num = 10
+num = 1
 if num % 2 == 0:
     if num % 3 == 0:
         print("2와 3의 공배수입니다.")
@@ -40,5 +40,4 @@ if num % 2 == 0 and num % 3 == 0:
     
 if True:
     print("항상 실행되는 문장")
-
-print("if와 상관없는 문장")
+    print("if와 상관없는 문장")
