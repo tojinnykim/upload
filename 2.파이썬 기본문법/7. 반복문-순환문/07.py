@@ -20,7 +20,7 @@ print('-'*100)
 # 고객 별 구매 금액 10000~200000원 사이의 랜덤한 금액
 purchases = []
 for _ in range(10):
-    purchases.append(random.randint(10,50)*10000)
+    purchases.append(random.randint(10,50)*1000)
 
 # 총 구매금액
 total_price = 0
