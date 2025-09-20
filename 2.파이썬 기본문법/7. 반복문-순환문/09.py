@@ -13,3 +13,4 @@ print(f'총 매출: {total_sales}원, 평균 : {average_sales}')
 for idx, sales in enumerate(sales): #enumerate() 함수는 리스트의 인덱스와 값을 동시에 반환
     if sales >= average_sales:
         print(f'평균 이상 매출이 일어난 요일: {date[idx]}')
+    
