@@ -1,5 +1,5 @@
 
-# 파이썬 내장 DB name email age loyalty_point
+# 파이썬 내장 DB   name email age loyalty_point
 import sqlite3
 # db 연결 : 파일 'test.db' 생성
 conn = sqlite3.connect('test.db')
@@ -15,16 +15,18 @@ cursor.execute('''
     )
 ''')
 # 데이터 생성
-customers_data = [
-    ('홍길동', 'abc@abc.com', 20, 100),
-    ('이순신', 'lee@abc.com', 30,)
+customers_data =[
+    ('홍길동2','hong2@gmail.com',25),
+    ('이순신2','lee2@gmail.com',30,)
 ]
-#db 데이터 삽입
+# db 데이터  삽입
 cursor.executemany('''
-    INSERT INTO customers (name, email, age, loyalty_points) 
-    VALUES (?, ?, ?, ?)'''
-    , customers_data
+    INSERT INTO 
+        customers (name,email,age) 
+        VALUES (?,?,?)'''
+        ,customers_data
 )
-conn.commit() # db 반영
+conn.commit()  # db 반영
+print('데이터 삽입 완료')
 #연결 닫기
 conn.close()
