@@ -1,3 +1,4 @@
+#파이썬 내장 DB
 class Customer:
     def __init__(self,name,email,age = 18):
         self.name = name
@@ -13,8 +14,7 @@ class Customer:
 
 # 인스턴스 생선
 c1 = Customer('홍길동','abc@abc.com',20)
-print(c1.earn_point(100))
-print(c1.get_profile())
 
 #메소드 사용 
-
+print(c1.earn_point(100))
+print(c1.get_profile())
