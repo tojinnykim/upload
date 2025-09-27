@@ -1,84 +1,95 @@
-import yfinance as yf
+# pip install finance-datareader
+import pandas as pd
+import FinanceDataReader as fdr
+from difflib import get_close_matches
+import re
 
-# 한국 주요 종목 코드 매핑
-STOCKS = {
-    '삼성전자': '005930.KS', 'SK하이닉스': '000660.KS', 'NAVER': '035420.KS', '네이버': '035420.KS',
-    '카카오': '035720.KS', 'LG화학': '051910.KS', '현대차': '005380.KS', '기아': '000270.KS',
-    'POSCO홀딩스': '005490.KS', '포스코홀딩스': '005490.KS', 'LG에너지솔루션': '373220.KS',
-    '삼성바이오로직스': '207940.KS', '셀트리온': '068270.KS', 'KB금융': '105560.KS',
-    '신한지주': '055550.KS', 'LG전자': '066570.KS', '현대모비스': '012330.KS',
-    'SK텔레콤': '017670.KS', 'KT&G': '033780.KS', '한국전력': '015760.KS'
-}
-
-def find_stock(name):
-    """종목명으로 코드 찾기 (정확 매칭 + 부분 매칭)"""
-    # 정확 매칭
-    if name in STOCKS:
-        return [(name, STOCKS[name])]
+def load_stock_data():
+    """한국 상장사 데이터 로드"""
+    print("📡 상장사 데이터 로딩중...")
     
-    # 부분 매칭
-    matches = [(stock_name, code) for stock_name, code in STOCKS.items() 
-               if name in stock_name or stock_name in name]
-    return matches
+    # KOSPI + KOSDAQ 데이터 가져오기
+    kospi = fdr.StockListing('KOSPI')
+    kosdaq = fdr.StockListing('KOSDAQ')
+    
+    # 데이터 합치기 및 정리
+    stocks = pd.concat([kospi, kosdaq], ignore_index=True)
+    stocks = stocks[['Symbol', 'Name']].rename(columns={'Symbol': 'ticker', 'Name': 'name'})
+    stocks['ticker'] = stocks['ticker'].astype(str).str.zfill(6)
+    
+    print(f"✅ {len(stocks):,}개 종목 로드 완료")
+    return stocks
 
-def get_stock_data(ticker):
-    """주식 데이터 가져오기"""
-    try:
-        stock = yf.Ticker(ticker)
-        hist = stock.history(period="2d")
-        
-        if hist.empty:
-            return None
-            
-        current = hist['Close'].iloc[-1]
-        prev = hist['Close'].iloc[-2] if len(hist) >= 2 else current
-        change = current - prev
-        change_pct = (change / prev) * 100
-        
-        return {
-            'price': current,
-            'change': change,
-            'change_pct': change_pct,
-            'volume': hist['Volume'].iloc[-1]
-        }
-    except:
-        return None
+def search_stock(query, stocks):
+    """종목 검색"""
+    # 정확한 매칭 확인
+    exact_match = stocks[stocks['name'] == query]
+    if not exact_match.empty:
+        return exact_match.iloc[0]['ticker'], "정확한 매칭"
+    
+    # 부분 매칭 (포함 관계)
+    partial_matches = stocks[stocks['name'].str.contains(query, na=False)]
+    if len(partial_matches) == 1:
+        return partial_matches.iloc[0]['ticker'], "부분 매칭"
+    elif len(partial_matches) > 1:
+        return partial_matches.head(5), "여러 후보"
+    
+    # 유사한 종목명 검색
+    all_names = stocks['name'].tolist()
+    similar_names = get_close_matches(query, all_names, n=5, cutoff=0.4)
+    
+    if similar_names:
+        similar_stocks = stocks[stocks['name'].isin(similar_names)]
+        return similar_stocks, "유사한 종목"
+    
+    return None, "매칭 실패"
 
 def main():
-    print("한국 주식 조회 (종료: quit)")
-    print(f"지원 종목: {', '.join(sorted(STOCKS.keys()))}")
+    """메인 실행 함수"""
+    try:
+        # 데이터 로드
+        stocks = load_stock_data()
+        
+        print("\n🎯 한국 주식 티커 검색")
+        print("=" * 40)
+        
+        while True:
+            query = input("\n종목명 입력 (종료: quit): ").strip()
+            
+            if query.lower() in ['quit', 'exit', '종료']:
+                break
+                
+            if not query:
+                continue
+            
+            # 검색 실행
+            result, match_type = search_stock(query, stocks)
+            
+            print(f"\n🔍 '{query}' 검색결과:")
+            
+            if match_type == "정확한 매칭":
+                print(f"✅ {query} → {result}")
+                
+            elif match_type == "부분 매칭":
+                print(f"📌 {query} → {result}")
+                
+            elif match_type in ["여러 후보", "유사한 종목"]:
+                print(f"📝 {match_type}:")
+                for _, row in result.iterrows():
+                    print(f"   {row['name']} → {row['ticker']}")
+                    
+            else:
+                print("❌ 일치하는 종목을 찾을 수 없습니다.")
     
-    while True:
-        name = input("\n종목명 입력: ").strip()
-        
-        if name.lower() in ['quit', 'q', '종료']:
-            break
-            
-        matches = find_stock(name)
-        
-        if not matches:
-            print(f"'{name}' 종목을 찾을 수 없습니다.")
-            continue
-            
-        if len(matches) > 1:
-            print("검색 결과:")
-            for i, (stock_name, _) in enumerate(matches, 1):
-                print(f"{i}. {stock_name}")
-            continue
-            
-        stock_name, ticker = matches[0]
-        data = get_stock_data(ticker)
-        
-        if not data:
-            print("데이터를 가져올 수 없습니다.")
-            continue
-            
-        # 결과 출력
-        sign = "▲" if data['change'] > 0 else "▼" if data['change'] < 0 else "-"
-        print(f"\n{stock_name} ({ticker})")
-        print(f"현재가: {data['price']:,.0f}원")
-        print(f"전일대비: {data['change']:+,.0f}원 ({data['change_pct']:+.2f}%) {sign}")
-        print(f"거래량: {data['volume']:,.0f}")
+    except Exception as e:
+        print(f"❌ 오류: {e}")
 
 if __name__ == "__main__":
-    main()
+    # main()
+
+    kospi = fdr.StockListing('KOSPI')
+    kosdaq = fdr.StockListing('KOSDAQ')
+    
+    # 데이터 합치기 및 정리
+    stocks = pd.concat([kospi, kosdaq], ignore_index=True)
+    stocks.to_csv('stocks.csv', index=False)
