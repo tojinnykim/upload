@@ -29,8 +29,10 @@ def get_coords_from_address(address):
         return None
 
 
+
+
 if __name__ == "__main__":
-    address = '전북 삼성동 100'
+    address = '서울 중구 을지로5길 26 미래에셋센터원'
 
     address = get_coords_from_address(address)
     print("결과:", address)
@@ -39,3 +41,5 @@ if __name__ == "__main__":
     
     # print("rufrhk:", address)
     # ensure_ascii=False 한글 깨짐 방지
+
+    
