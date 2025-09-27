@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_67d933461c3afd191ea66c299ccff9d5 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_67d933461c3afd191ea66c299ccff9d5" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_67d933461c3afd191ea66c299ccff9d5 = L.map(
+                "map_67d933461c3afd191ea66c299ccff9d5",
+                {
+                    center: [37.531329519477, 126.924243532498],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_8c54a881d4aa38f89e92234d7873a230 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_8c54a881d4aa38f89e92234d7873a230.addTo(map_67d933461c3afd191ea66c299ccff9d5);
+        
+    
+            var marker_5875d34e701923d011a36e4b385ad47c = L.marker(
+                [37.531329519477, 126.924243532498],
+                {
+}
+            ).addTo(map_67d933461c3afd191ea66c299ccff9d5);
+        
+    
+        var popup_000bb10fd53ce02968ba41e205349395 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_30c3cddd8974179dd86ae979e6b48b84 = $(`<div id="html_30c3cddd8974179dd86ae979e6b48b84" style="width: 100.0%; height: 100.0%;">서울</div>`)[0];
+                popup_000bb10fd53ce02968ba41e205349395.setContent(html_30c3cddd8974179dd86ae979e6b48b84);
+            
+        
+
+        marker_5875d34e701923d011a36e4b385ad47c.bindPopup(popup_000bb10fd53ce02968ba41e205349395)
+        ;
+
+        
+    
+    
+            marker_5875d34e701923d011a36e4b385ad47c.bindTooltip(
+                `<div>
+                     서울
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>
