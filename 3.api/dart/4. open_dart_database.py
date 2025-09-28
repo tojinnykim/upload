@@ -1,5 +1,5 @@
-import open_dart_xml as dart
-data_list = dart.get_data_dart()
+import three_open_dart_xml as dart
+
 # sqlite3 데이터베이스 생성 테이블 생성 데이터 삽입
 import sqlite3
 
@@ -21,9 +21,12 @@ CREATE TABLE IF NOT EXISTS company (
 #     ("00123456", "삼성전자"),
 #     ("00789012", "LG화학"),
 #     ("00987654", "현대자동차")
+# ]
 
 # 4. executemany()를 사용해 한 번에 추가
-cur.executemany('''INSERT OR IGNORE INTO company (corp_code, corp_name) 
+data_list = dart.get_data_dart()
+cur.executemany('''
+                INSERT OR IGNORE INTO company (corp_code, corp_name) 
                 VALUES (?, ?)''', data_list)
 
 # 5. 저장 후 닫기
