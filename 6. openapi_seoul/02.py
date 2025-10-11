@@ -87,3 +87,6 @@ column_mapping = {
 }
 df.rename(columns= column_mapping, inplace=True)
 df.to_csv('seoul_store.csv', index=False, encoding='cp949')
+
+with pd.ExcelWriter('output.xlsx') as writer:
+    df.to_excel(writer, sheet_name='Sheet1')
